@@ -3,6 +3,8 @@
 bool GDIScreenRenderer::Initialize(HWND* hWnd) {
 	WindowHandle = hWnd;
 
+	PaintStruct = { 0 };
+
 	// Create a new buffer based on our window (basically just like when drawing image)
 	ScreenBuffer2 = CreateCompatibleDC(GetWindowDC(*hWnd));
 	// Create a bitmap based on that new buffer
@@ -11,7 +13,8 @@ bool GDIScreenRenderer::Initialize(HWND* hWnd) {
 	SelectObject(ScreenBuffer2, ScreenBuffer2Bitmap);
 
 	CompatibleContextHandle = CreateCompatibleDC(GetWindowDC(*hWnd));
-	ImageVector = std::vector<GDIImage>();
+	ImageVector = std::vector<IImage*>();
+	Images = std::vector<GDIImage>();
 
 	BackgroundBrush = CreateSolidBrush(0x00000000);
 	return true;
@@ -21,16 +24,16 @@ void GDIScreenRenderer::Shutdown(HWND* hWnd) {
 
 }
 
-
 IImage* GDIScreenRenderer::LoadImage(const TCHAR* filename) {
 	GDIImage image = GDIImage();
 	image.CreateFromFile(filename);
-	ImageVector.push_back(image);
+	Images.push_back(image);
+	ImageVector[Images.size() - 1] = &Images[Images.size() - 1];
 	return nullptr;
 }
 
 void GDIScreenRenderer::BeginDraw() {
-	ScreenBuffer1 = BeginPaint(*WindowHandle, PaintStruct);
+	ScreenBuffer1 = BeginPaint(*WindowHandle, &PaintStruct);
 	RECT r = { 0, 0, 800, 600 };
 	FillRect(ScreenBuffer2, (const RECT*)&r, BackgroundBrush);
 }
@@ -39,7 +42,7 @@ void GDIScreenRenderer::EndDraw() {
 	// When we're done drawing, "copy" ScreenBuffer2 to ScreenBuffer1
 	StretchBlt(ScreenBuffer1, 0, 0, 800, 600, ScreenBuffer2, 0, 0, 800, 600, SRCCOPY);
 
-	EndPaint(*WindowHandle, PaintStruct);
+	EndPaint(*WindowHandle, &PaintStruct);
 }
 
 void GDIScreenRenderer::DrawImage(int mapId, const RECT* screenPosition, const RECT* imagePosition) {

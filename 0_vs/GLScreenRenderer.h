@@ -1,26 +1,18 @@
 #pragma once
-#include "IScreenRenderer.h"
-#include "GDIImage.h"
-#include <vector>
 
-class GDIScreenRenderer : public IScreenRenderer
+#include "Windows.h"
+#pragma comment(lib, "opengl32.lib")
+#include "Gl/Gl.h"
+
+#include "IScreenRenderer.h"
+
+class GLScreenRenderer : public IScreenRenderer
 {
 public:
-	std::vector<GDIImage> Images;
-	HBRUSH BackgroundBrush;
-
-	HINSTANCE* InstanceHandler;
+	PIXELFORMATDESCRIPTOR pfd;
 	HWND* WindowHandle;
-	
-	// Double buffering (buffer = device context)
-	HDC ScreenBuffer1;		// shown buffer
-	HDC ScreenBuffer2;		// buffer that's drawn on in the background
-
-	// Requires a bitmap of ScreenBuffer2, since we can't draw ScreenBuffer2 directly onto ScreenBuffer1
-	HBITMAP ScreenBuffer2Bitmap;
-	HDC CompatibleContextHandle;
-
-	PAINTSTRUCT PaintStruct;
+	HGLRC GLRenderingContext;
+	HDC ScreenBuffer;
 
 	virtual bool Initialize(HWND* hWnd) override;
 	virtual void Shutdown(HWND* hWnd);

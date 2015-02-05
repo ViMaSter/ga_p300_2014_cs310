@@ -1,4 +1,5 @@
 #include "main.h"
+#include "GLScreenRenderer.h"
 #include "GDIScreenRenderer.h"
 #include "GDIImage.h"
 #include "d3d11.h"
@@ -13,9 +14,8 @@ TCHAR WindowTitle[] = "title";
 TCHAR WindowClassName[] = "TestWindowClass";
 HWND windowHandle;
 RECT wr = { 0, 0, 800, 600 };
-PAINTSTRUCT ps = { 0 };
 
-GDIScreenRenderer renderer;
+GLScreenRenderer renderer;
 
 HBRUSH backgroundBrsh;
 HBRUSH brsh;
@@ -59,8 +59,6 @@ LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	case WM_MOUSEFIRST:
 		break;
 	case WM_PAINT:
-		renderer.PaintStruct = &ps;
-
 		renderer.BeginDraw();
 
 		GetCursorPos((LPPOINT)&p);
@@ -79,11 +77,13 @@ LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 				r.left += 128 * x;
 				r.top += 40 * y;
 
-				Button btn(r, &(renderer.ImageVector[0]), "Test!");
+				if (renderer.ImageVector.size() > 0) {
+					Button btn(r, renderer.ImageVector[0], "Test!");
 				
-				btn.TextContent = s;
-				btn.UpdateStateByMouseInput(p.x, p.y, GetAsyncKeyState(VK_LBUTTON));
-				btn.Draw(&renderer);
+					btn.TextContent = s;
+					btn.UpdateStateByMouseInput(p.x, p.y, GetAsyncKeyState(VK_LBUTTON));
+					btn.Draw(&renderer);
+				}
 			}
 		}
 
@@ -96,11 +96,11 @@ LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 				CurrentPosition.top		+= 10 * y;
 				CurrentPosition.bottom	+= 10 * y + 5;
 
-				FillRect(renderer.ScreenBuffer2, (const RECT*)&CurrentPosition, brsh);		// <-- GDI specific
+				//FillRect(renderer.ScreenBuffer2, (const RECT*)&CurrentPosition, brsh);		// <-- GDI specific
 			}
 		}
 
-		SetBkMode(renderer.ScreenBuffer2, TRANSPARENT);
+		//SetBkMode(renderer.ScreenBuffer2, TRANSPARENT);
 		renderer.DrawText(&TextPos, "butz!");
 
 
