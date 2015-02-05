@@ -6,7 +6,9 @@
 class GDIScreenRenderer : public IScreenRenderer
 {
 public:
-	std::vector<GDIImage> imageVector;
+	std::vector<GDIImage> ImageVector;
+
+	HBRUSH BackgroundBrush;
 
 	HINSTANCE* InstanceHandler;
 	HWND* WindowHandle;
@@ -29,7 +31,8 @@ public:
 	virtual void BeginDraw() override;
 	virtual void EndDraw() override;
 
-	virtual void DrawImage(int MapId, const RECT* screenPosition, const RECT* imagePosition);
-	virtual void DrawText(const RECT* screenPosition, const TCHAR* string);
+	virtual void DrawImage(int mapId, const RECT* screenPosition, const RECT* imagePosition) override;
+	virtual void DrawImage(IImage* image, const RECT* screenPosition, const RECT* imagePosition) override;
+	virtual void DrawText(const RECT* screenPosition, const TCHAR* string) override;
 };
 

@@ -11,7 +11,9 @@ bool GDIScreenRenderer::Initialize(HWND* hWnd) {
 	SelectObject(ScreenBuffer2, ScreenBuffer2Bitmap);
 
 	CompatibleContextHandle = CreateCompatibleDC(GetWindowDC(*hWnd));
-	imageVector = std::vector<GDIImage>();
+	ImageVector = std::vector<GDIImage>();
+
+	BackgroundBrush = CreateSolidBrush(0x00000000);
 	return true;
 }
 
@@ -23,12 +25,14 @@ void GDIScreenRenderer::Shutdown(HWND* hWnd) {
 IImage* GDIScreenRenderer::LoadImage(const TCHAR* filename) {
 	GDIImage image = GDIImage();
 	image.CreateFromFile(filename);
-	imageVector.push_back(image);
+	ImageVector.push_back(image);
 	return nullptr;
 }
 
 void GDIScreenRenderer::BeginDraw() {
 	ScreenBuffer1 = BeginPaint(*WindowHandle, PaintStruct);
+	RECT r = { 0, 0, 800, 600 };
+	FillRect(ScreenBuffer2, (const RECT*)&r, BackgroundBrush);
 }
 
 void GDIScreenRenderer::EndDraw() {
@@ -38,10 +42,18 @@ void GDIScreenRenderer::EndDraw() {
 	EndPaint(*WindowHandle, PaintStruct);
 }
 
+void GDIScreenRenderer::DrawImage(int mapId, const RECT* screenPosition, const RECT* imagePosition) {
+	return DrawImage((IImage*)&ImageVector[mapId], screenPosition, imagePosition);
+}
 
-void GDIScreenRenderer::DrawImage(int imageId, const RECT* sourcePosition, const RECT* destinationPosition) {
-	SelectObject(CompatibleContextHandle, imageVector[imageId].Bitmap);
-	StretchBlt(ScreenBuffer2, destinationPosition->left, destinationPosition->top, destinationPosition->right, destinationPosition->bottom, CompatibleContextHandle, sourcePosition->left, sourcePosition->top, sourcePosition->right, sourcePosition->bottom, SRCCOPY);
+void GDIScreenRenderer::DrawImage(IImage* image, const RECT* screenPosition, const RECT* imagePosition) {
+	SelectObject(CompatibleContextHandle, ((GDIImage*)image)->Bitmap);
+	StretchBlt(
+		ScreenBuffer2,
+		screenPosition->left, screenPosition->top, screenPosition->right, screenPosition->bottom,
+		CompatibleContextHandle,
+		imagePosition->left, imagePosition->top, imagePosition->right, imagePosition->bottom,
+		SRCCOPY);
 }
 
 void GDIScreenRenderer::DrawText(const RECT* screenPosition, const TCHAR* string) {

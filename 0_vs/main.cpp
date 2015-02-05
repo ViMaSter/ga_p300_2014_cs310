@@ -2,6 +2,7 @@
 #include "GDIScreenRenderer.h"
 #include "GDIImage.h"
 #include "d3d11.h"
+#include "Button.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -14,11 +15,13 @@ HWND windowHandle;
 RECT wr = { 0, 0, 800, 600 };
 PAINTSTRUCT ps = { 0 };
 
-GDIImage img;
 GDIScreenRenderer renderer;
 
 HBRUSH backgroundBrsh;
 HBRUSH brsh;
+
+RECT btnPos = { 100, 100, 128, 40 };
+Button btn;
 
 // Error handler
 bool Failed(HRESULT aResult) {
@@ -33,6 +36,8 @@ bool Failed(HRESULT aResult) {
 	return false;
 }
 
+bool mouseClicked = false;
+
 LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	int wmId, wmEvent;
 	RECT StartPosition = { 20, 20, 20, 20 };
@@ -42,21 +47,47 @@ LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	RECT DestPos = { 0, 200, 300, 300 };
 	RECT TextPos = { 400, 20, 500, 500 };
 
+	DWORD d;
+	POINT p;
+
 	int sinusOffset = ((sin((float)GetTickCount()/1000)*20)+40)/2;
 
 	switch (message) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+	case WM_MOUSEFIRST:
+		break;
 	case WM_PAINT:
 		renderer.PaintStruct = &ps;
 
 		renderer.BeginDraw();
 
-		FillRect(renderer.ScreenBuffer2, (const RECT*)&wr, backgroundBrsh);
+		GetCursorPos((LPPOINT)&p);
+		ScreenToClient(hWnd, &p);
 
-		renderer.DrawImage(0, &ImageUV, &DestPos);
+		// Buttons
+		for (int x = 0; x < 5; x++) {
+			for (int y = 0; y < 10; y++) {
+				std::string s = "";
+				s += "X: ";
+				s += std::to_string(x);
+				s += " - Y: ";
+				s += std::to_string(y);
 
+				RECT r = btnPos;
+				r.left += 128 * x;
+				r.top += 40 * y;
+
+				Button btn(r, &(renderer.ImageVector[0]), "Test!");
+				
+				btn.TextContent = s;
+				btn.UpdateStateByMouseInput(p.x, p.y, GetAsyncKeyState(VK_LBUTTON));
+				btn.Draw(&renderer);
+			}
+		}
+
+		// Cyan-colored squares
 		for (int x = 0; x < 20; x++) {
 			for (int y = 0; y < 20; y++) {
 				CurrentPosition = StartPosition;
@@ -65,12 +96,13 @@ LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 				CurrentPosition.top		+= 10 * y;
 				CurrentPosition.bottom	+= 10 * y + 5;
 
-				FillRect(renderer.ScreenBuffer2, (const RECT*)&CurrentPosition, brsh);
+				FillRect(renderer.ScreenBuffer2, (const RECT*)&CurrentPosition, brsh);		// <-- GDI specific
 			}
 		}
 
 		SetBkMode(renderer.ScreenBuffer2, TRANSPARENT);
 		renderer.DrawText(&TextPos, "butz!");
+
 
 		renderer.EndDraw();
 
@@ -112,7 +144,6 @@ BOOL InitWindow(HINSTANCE hInstance, int nCmdShow, TCHAR* windowTitle, TCHAR* wi
 		return false;
 	}
 
-	backgroundBrsh = CreateSolidBrush(0x00000000);
 	brsh = CreateSolidBrush(0x00ffc000);
 
 	renderer.Initialize(&windowHandle);

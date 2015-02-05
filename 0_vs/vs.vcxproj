@@ -65,6 +65,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="DummyImage.cpp" />
     <ClCompile Include="DummyScreenRenderer.cpp" />
     <ClCompile Include="GDIImage.cpp" />
@@ -74,6 +75,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="DummyImage.h" />
     <ClInclude Include="DummyScreenRenderer.h" />
     <ClInclude Include="GDIImage.h" />
