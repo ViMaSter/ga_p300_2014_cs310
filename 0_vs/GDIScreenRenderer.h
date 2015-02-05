@@ -10,8 +10,15 @@ public:
 
 	HINSTANCE* InstanceHandler;
 	HWND* WindowHandle;
-	HDC DeviceContextHandle;
+	
+	// Double buffering (buffer = device context)
+	HDC ScreenBuffer1;		// shown buffer
+	HDC ScreenBuffer2;		// buffer that's drawn on in the background
+
+	// Requires a bitmap of ScreenBuffer2, since we can't draw ScreenBuffer2 directly onto ScreenBuffer1
+	HBITMAP ScreenBuffer2Bitmap;
 	HDC CompatibleContextHandle;
+
 	PAINTSTRUCT* PaintStruct;
 
 	virtual bool Initialize(HWND* hWnd) override;

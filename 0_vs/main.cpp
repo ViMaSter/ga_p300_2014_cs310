@@ -17,7 +17,8 @@ PAINTSTRUCT ps = { 0 };
 GDIImage img;
 GDIScreenRenderer renderer;
 
-
+HBRUSH backgroundBrsh;
+HBRUSH brsh;
 
 // Error handler
 bool Failed(HRESULT aResult) {
@@ -38,8 +39,10 @@ LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	RECT CurrentPosition = StartPosition;
 
 	RECT ImageUV = { 0, 0, 150, 150 };
-	RECT DestPos = { 0, 0, 300, 300 };
+	RECT DestPos = { 0, 200, 300, 300 };
 	RECT TextPos = { 400, 20, 500, 500 };
+
+	int sinusOffset = ((sin((float)GetTickCount()/1000)*20)+40)/2;
 
 	switch (message) {
 	case WM_DESTROY:
@@ -50,27 +53,28 @@ LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 		renderer.BeginDraw();
 
-		renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/0_gdi/files/button.bmp");
+		FillRect(renderer.ScreenBuffer2, (const RECT*)&wr, backgroundBrsh);
+
+		renderer.DrawImage(0, &ImageUV, &DestPos);
 
 		for (int x = 0; x < 20; x++) {
 			for (int y = 0; y < 20; y++) {
 				CurrentPosition = StartPosition;
-				CurrentPosition.left	+= 10 * x;
-				CurrentPosition.right	+= 10 * x + 5;
+				CurrentPosition.left    += (int)sinusOffset * x;
+				CurrentPosition.right   += (int)sinusOffset * x + 5;
 				CurrentPosition.top		+= 10 * y;
 				CurrentPosition.bottom	+= 10 * y + 5;
 
-				FillRect(renderer.DeviceContextHandle, (const RECT*)&CurrentPosition, CreateSolidBrush(0x00ffc000));
+				FillRect(renderer.ScreenBuffer2, (const RECT*)&CurrentPosition, brsh);
 			}
 		}
 
-		renderer.DrawImage(0, &ImageUV, &DestPos);
-		SetBkMode(renderer.DeviceContextHandle, TRANSPARENT);
+		SetBkMode(renderer.ScreenBuffer2, TRANSPARENT);
 		renderer.DrawText(&TextPos, "butz!");
 
 		renderer.EndDraw();
 
-		//InvalidateRect(hWnd, &wr, true);
+		InvalidateRect(hWnd, &wr, false);
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -88,7 +92,7 @@ ATOM RegisterClass(HINSTANCE hInstance, TCHAR* windowClassName) {
 	wcex.lpfnWndProc = processMessages;
 	wcex.hInstance = hInstance;
 	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wcex.hbrBackground = (HBRUSH)nullptr;
 
 	wcex.lpszClassName = windowClassName;
 
@@ -108,6 +112,13 @@ BOOL InitWindow(HINSTANCE hInstance, int nCmdShow, TCHAR* windowTitle, TCHAR* wi
 		return false;
 	}
 
+	backgroundBrsh = CreateSolidBrush(0x00000000);
+	brsh = CreateSolidBrush(0x00ffc000);
+
+	renderer.Initialize(&windowHandle);
+
+	renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/1_files/button.bmp");
+
 	ShowWindow(windowHandle, nCmdShow);
 
 	UpdateWindow(windowHandle);
@@ -121,6 +132,7 @@ int APIENTRY _tWinMain(
 	_In_ LPTSTR lpCmdLine,
 	_In_ int nCmdShow
 ) {
+
 	if (RegisterClass(instanceHandler, WindowClassName) == 0) {
 		if (Failed(GetLastError())) {
 			return 0;
@@ -130,8 +142,6 @@ int APIENTRY _tWinMain(
 	if (!InitWindow(instanceHandler, nCmdShow, WindowTitle, WindowClassName)) {
 		return false;
 	}
-
-	renderer.Initialize(&windowHandle);
 
 	MSG systemMessages;
 	HACCEL inputAccelTable;
