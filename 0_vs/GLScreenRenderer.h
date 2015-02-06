@@ -10,7 +10,6 @@
 class GLScreenRenderer : public IScreenRenderer
 {
 public:
-	std::vector<GLImage> Images;
 	PIXELFORMATDESCRIPTOR PixelFormatDescriptor;
 	HWND* WindowHandle;
 	HGLRC GLRenderingContext;

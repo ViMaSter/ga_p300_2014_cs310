@@ -45,7 +45,7 @@ LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 	RECT ImageUV = { 0, 0, 150, 150 };
 	RECT DestPos = { 0, 200, 300, 300 };
-	RECT TextPos = { 400, 20, 500, 500 };
+	RECT TextPos = { 400, 20, 500, 100 };
 
 	DWORD d;
 	POINT p;
@@ -68,9 +68,9 @@ LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		for (int x = 0; x < 5; x++) {
 			for (int y = 0; y < 10; y++) {
 				std::string s = "";
-				s += "X: ";
+				s += "X:";
 				s += std::to_string(x);
-				s += " - Y: ";
+				s += "-Y:";
 				s += std::to_string(y);
 
 				RECT r = btnPos;
@@ -101,8 +101,7 @@ LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		}
 
 		//SetBkMode(renderer.ScreenBuffer2, TRANSPARENT);
-		renderer.DrawText(&TextPos, "butz!");
-
+		renderer.DrawText(&TextPos, "butts.");
 
 		renderer.EndDraw();
 
@@ -137,7 +136,7 @@ BOOL InitWindow(HINSTANCE hInstance, int nCmdShow, TCHAR* windowTitle, TCHAR* wi
 
 	AdjustWindowRect(&wr, windowStyle, FALSE);
 
-	windowHandle = CreateWindow(windowClassName, windowTitle, windowStyle, CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top, NULL, NULL, hInstance, NULL);
+	windowHandle = CreateWindow(windowClassName, windowTitle, windowStyle, 1920, 0, wr.right - wr.left, wr.bottom - wr.top, NULL, NULL, hInstance, NULL);
 
 	if (!windowHandle) {
 		Failed(GetLastError());
@@ -148,8 +147,8 @@ BOOL InitWindow(HINSTANCE hInstance, int nCmdShow, TCHAR* windowTitle, TCHAR* wi
 
 	renderer.Initialize(&windowHandle);
 	
-	//renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/1_files/font.bmp");
 	renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/1_files/button.bmp");
+	renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/1_files/font.bmp");
 
 	ShowWindow(windowHandle, nCmdShow);
 
