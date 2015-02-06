@@ -148,8 +148,8 @@ BOOL InitWindow(HINSTANCE hInstance, int nCmdShow, TCHAR* windowTitle, TCHAR* wi
 
 	renderer.Initialize(&windowHandle);
 	
-	renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/PR320_advancedcpp/0_memorybuffer/files/example.bmp");
-	//renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/1_files/button.bmp");
+	//renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/1_files/font.bmp");
+	renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/1_files/button.bmp");
 
 	ShowWindow(windowHandle, nCmdShow);
 

@@ -21,6 +21,9 @@ void GLImage::CreateFromFile(const TCHAR* pathToFile) {
 
 	int currentPosition = (int)bitmapFileHandle.FileStream.tellg();
 
+	Size.x = Bitmap.Body.biWidth;
+	Size.y = Bitmap.Body.biHeight;
+
 	ColorInfo pixel = ColorInfo();
 	for (int x = 0; x < Bitmap.Body.biWidth; x++) {
 		for (int y = 0; y < Bitmap.Body.biHeight; y++) {
@@ -28,4 +31,12 @@ void GLImage::CreateFromFile(const TCHAR* pathToFile) {
 			PixelWithAlpha.push_back(pixel);
 		}
 	}
+}
+
+void GLImage::GetTextureCoordinate(float* x, float* y) {
+	*x /= Size.x;
+	*y /= Size.y;
+
+	*x = 1 - *x;
+	*y = 1 - *y;
 }
