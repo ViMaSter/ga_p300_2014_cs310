@@ -73,6 +73,6 @@ struct ColorInfoA : ColorInfo {
 		B = c.B;
 		G = c.G;
 		R = c.R;
-		A = (c.R == 255 && c.G == 255 && c.B == 255) ? 0 : 255;
+		A = (c.R == 255 && c.G == 0 && c.B == 255) ? 0 : 255;
 	}
 };
