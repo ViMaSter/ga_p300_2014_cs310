@@ -5,11 +5,13 @@
 #include "Gl/Gl.h"
 
 #include "IScreenRenderer.h"
+#include "GLImage.h"
 
 class GLScreenRenderer : public IScreenRenderer
 {
 public:
-	PIXELFORMATDESCRIPTOR pfd;
+	std::vector<GLImage> Images;
+	PIXELFORMATDESCRIPTOR PixelFormatDescriptor;
 	HWND* WindowHandle;
 	HGLRC GLRenderingContext;
 	HDC ScreenBuffer;

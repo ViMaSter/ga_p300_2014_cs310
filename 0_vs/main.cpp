@@ -74,8 +74,8 @@ LRESULT CALLBACK processMessages(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 				s += std::to_string(y);
 
 				RECT r = btnPos;
-				r.left += 128 * x;
-				r.top += 40 * y;
+				r.left += 138 * x;
+				r.top += 50 * y;
 
 				if (renderer.ImageVector.size() > 0) {
 					Button btn(r, renderer.ImageVector[0], "Test!");
@@ -147,8 +147,9 @@ BOOL InitWindow(HINSTANCE hInstance, int nCmdShow, TCHAR* windowTitle, TCHAR* wi
 	brsh = CreateSolidBrush(0x00ffc000);
 
 	renderer.Initialize(&windowHandle);
-
-	renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/1_files/button.bmp");
+	
+	renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/PR320_advancedcpp/0_memorybuffer/files/example.bmp");
+	//renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/1_files/button.bmp");
 
 	ShowWindow(windowHandle, nCmdShow);
 

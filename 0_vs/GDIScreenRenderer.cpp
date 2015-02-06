@@ -26,10 +26,12 @@ void GDIScreenRenderer::Shutdown(HWND* hWnd) {
 
 IImage* GDIScreenRenderer::LoadImage(const TCHAR* filename) {
 	GDIImage image = GDIImage();
+
 	image.CreateFromFile(filename);
+
 	Images.push_back(image);
-	ImageVector[Images.size() - 1] = &Images[Images.size() - 1];
-	return nullptr;
+	ImageVector.push_back(&Images[Images.size() - 1]);
+	return ImageVector[Images.size() - 1];
 }
 
 void GDIScreenRenderer::BeginDraw() {
@@ -39,7 +41,7 @@ void GDIScreenRenderer::BeginDraw() {
 }
 
 void GDIScreenRenderer::EndDraw() {
-	// When we're done drawing, "copy" ScreenBuffer2 to ScreenBuffer1
+	// When we're done drawing, "copy" ScreenBuffer2 (backbuffer) to ScreenBuffer1 (frontbuffer)
 	StretchBlt(ScreenBuffer1, 0, 0, 800, 600, ScreenBuffer2, 0, 0, 800, 600, SRCCOPY);
 
 	EndPaint(*WindowHandle, &PaintStruct);

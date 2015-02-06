@@ -70,21 +70,26 @@
     <ClCompile Include="DummyScreenRenderer.cpp" />
     <ClCompile Include="GDIImage.cpp" />
     <ClCompile Include="GDIScreenRenderer.cpp" />
+    <ClCompile Include="GLImage.cpp" />
     <ClCompile Include="GLScreenRenderer.cpp" />
     <ClCompile Include="IImage.cpp" />
     <ClCompile Include="IScreenRenderer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bitmap.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="DummyImage.h" />
     <ClInclude Include="DummyScreenRenderer.h" />
+    <ClInclude Include="FileHandle.h" />
     <ClInclude Include="GDIImage.h" />
     <ClInclude Include="GDIScreenRenderer.h" />
+    <ClInclude Include="GLImage.h" />
     <ClInclude Include="GLScreenRenderer.h" />
     <ClInclude Include="IImage.h" />
     <ClInclude Include="IScreenRenderer.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="MemoryBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,8 +13,7 @@ Button::Button() {
 
 }
 
-Button::~Button()
-{
+Button::~Button() {
 
 }
 
@@ -41,13 +40,14 @@ void Button::Draw(IScreenRenderer* renderer) {
 	RECT textRect = RECT{ Position.left, Position.top, Position.left+Position.right, Position.top+Position.bottom };
 
 	renderer->DrawText(&textRect, TextContent.c_str());
-	float test = 2;
 	return;
 }
 
 void Button::ChangeState(State newState)
 {
 	CurrentState = newState;
+
+	// Move background image according to the new button state
 	BackgroundImageSize = RECT{
 		0,
 		(Position.bottom) * newState,
