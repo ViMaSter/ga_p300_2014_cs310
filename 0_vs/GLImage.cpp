@@ -28,7 +28,7 @@ void GLImage::CreateFromFile(const TCHAR* pathToFile) {
 	for (int x = 0; x < Bitmap.Body.biWidth; x++) {
 		for (int y = 0; y < Bitmap.Body.biHeight; y++) {
 			bitmapFileHandle.Read(pixel, false);
-			PixelWithAlpha.push_back(pixel);
+			PixelWithAlpha.push_back(ColorInfoA(pixel));
 		}
 	}
 }
@@ -37,6 +37,6 @@ void GLImage::GetTextureCoordinate(float* x, float* y) {
 	*x /= Size.x;
 	*y /= Size.y;
 
-	*x = 1 - *x;
+	*x = *x;
 	*y = 1 - *y;
 }
