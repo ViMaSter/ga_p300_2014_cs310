@@ -1,12 +1,8 @@
 #include "main.h"
+#include "DXScreenRenderer.h"
 #include "GLScreenRenderer.h"
 #include "GDIScreenRenderer.h"
-#include "GDIImage.h"
-#include "d3d11.h"
 #include "Button.h"
-
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "dxgi.lib")
 
 #define STRINGLENGTH 100
 
@@ -15,7 +11,7 @@ TCHAR WindowClassName[] = "TestWindowClass";
 HWND windowHandle;
 RECT wr = { 0, 0, 800, 600 };
 
-GLScreenRenderer renderer;
+DXScreenRenderer renderer;
 
 HBRUSH backgroundBrsh;
 HBRUSH brsh;
@@ -147,8 +143,8 @@ BOOL InitWindow(HINSTANCE hInstance, int nCmdShow, TCHAR* windowTitle, TCHAR* wi
 
 	renderer.Initialize(&windowHandle);
 	
-	renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/1_files/button.bmp");
-	renderer.LoadImage("C:/Users/vincent.mahnke/Dropbox/games_academy/lessons/2_p300/CS310_graphics/1_files/font.bmp");
+	renderer.LoadImage("../1_files/button.bmp");
+	renderer.LoadImage("../1_files/font.bmp");
 
 	ShowWindow(windowHandle, nCmdShow);
 

@@ -60,7 +60,9 @@ bool GLScreenRenderer::Initialize(HWND* hWnd) {
 
 
 void GLScreenRenderer::Shutdown(HWND* hWnd) {
-
+	for (int i = 0; i < ImageVector.size(); i++) {
+		delete ImageVector[i];
+	}
 }
 
 

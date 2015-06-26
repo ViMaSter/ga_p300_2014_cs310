@@ -68,6 +68,8 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="DummyImage.cpp" />
     <ClCompile Include="DummyScreenRenderer.cpp" />
+    <ClCompile Include="DXImage.cpp" />
+    <ClCompile Include="DXScreenRenderer.cpp" />
     <ClCompile Include="GDIImage.cpp" />
     <ClCompile Include="GDIScreenRenderer.cpp" />
     <ClCompile Include="GLImage.cpp" />
@@ -81,6 +83,8 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="DummyImage.h" />
     <ClInclude Include="DummyScreenRenderer.h" />
+    <ClInclude Include="DXImage.h" />
+    <ClInclude Include="DXScreenRenderer.h" />
     <ClInclude Include="FileHandle.h" />
     <ClInclude Include="GDIImage.h" />
     <ClInclude Include="GDIScreenRenderer.h" />
@@ -90,6 +94,13 @@
     <ClInclude Include="IScreenRenderer.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MemoryBuffer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="shader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,11 +6,9 @@
 class GDIScreenRenderer : public IScreenRenderer
 {
 public:
-	std::vector<GDIImage> Images;
 	HBRUSH BackgroundBrush;
 
 	HINSTANCE* InstanceHandler;
-	HWND* WindowHandle;
 	
 	// Double buffering (buffer = device context)
 	HDC ScreenBuffer1;		// shown buffer

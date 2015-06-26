@@ -14,24 +14,23 @@ bool GDIScreenRenderer::Initialize(HWND* hWnd) {
 
 	CompatibleContextHandle = CreateCompatibleDC(GetWindowDC(*hWnd));
 	ImageVector = std::vector<IImage*>();
-	Images = std::vector<GDIImage>();
 
 	BackgroundBrush = CreateSolidBrush(0x00000000);
 	return true;
 }
 
 void GDIScreenRenderer::Shutdown(HWND* hWnd) {
-
+	for (int i = 0; i < ImageVector.size(); i++) {
+		delete ImageVector[i];
+	}
 }
 
 IImage* GDIScreenRenderer::LoadImage(const TCHAR* filename) {
-	GDIImage image = GDIImage();
+	GDIImage* image = new GDIImage();
+	image->CreateFromFile(filename);
 
-	image.CreateFromFile(filename);
-
-	Images.push_back(image);
-	ImageVector.push_back(&Images[Images.size() - 1]);
-	return ImageVector[Images.size() - 1];
+	ImageVector.push_back(image);
+	return ImageVector[ImageVector.size() - 1];
 }
 
 void GDIScreenRenderer::BeginDraw() {

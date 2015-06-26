@@ -1,10 +1,10 @@
-#include "GLImage.h"
+#include "DXImage.h"
 
-GLImage::GLImage() {
+DXImage::DXImage() {
 	PixelWithAlpha = std::vector<ColorInfoA>();
 }
 
-void GLImage::CreateFromFile(const TCHAR* pathToFile) {
+void DXImage::CreateFromFile(const TCHAR* pathToFile) {
 	PathToFile = std::string(pathToFile);
 	Bitmap = (HBITMAP) ::LoadImage(NULL, PathToFile.c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 
@@ -32,7 +32,7 @@ void GLImage::CreateFromFile(const TCHAR* pathToFile) {
 	}
 }
 
-void GLImage::GetTextureCoordinate(float* x, float* y) {
+void DXImage::GetTextureCoordinate(float* x, float* y) {
 	*x /= Size.x;
 	*y /= Size.y;
 

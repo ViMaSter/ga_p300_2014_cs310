@@ -1,7 +1,7 @@
 #pragma once
-#include "Windows.h"
-#include "Gl/Gl.h"
-#pragma comment(lib, "opengl32.lib")
+#include "IImage.h"
+#include "d3d11.h"
+#pragma comment(lib, "d3d11.lib")
 
 #include "FileHandle.h"
 #include "Bitmap.h"
@@ -9,15 +9,16 @@
 #include <vector>
 #include <string>
 
-class GLImage : public IImage
+class DXImage : public IImage
 {
 public:
 	std::vector<ColorInfoA> PixelWithAlpha;
 	POINT Size;
 
-	GLuint InternalName;
-	
-	GLImage::GLImage();
+	ID3D11Texture2D* InternalTexture;
+	D3D11_SUBRESOURCE_DATA InternalData;
+
+	DXImage::DXImage();
 
 	void GetTextureCoordinate(float* x, float* y);
 	virtual void CreateFromFile(const TCHAR* pathToFile) override;

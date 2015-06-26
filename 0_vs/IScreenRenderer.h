@@ -14,6 +14,7 @@ class IScreenRenderer
 protected:
 
 public:
+	HWND* WindowHandle;
 	std::vector<IImage*> ImageVector;
 
 	virtual bool Initialize(HWND* hWnd) = 0;
