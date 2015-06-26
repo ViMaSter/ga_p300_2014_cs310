@@ -1,3 +1,4 @@
+#pragma once
 #include "memory.h"
 #include "stdlib.h"
 #include <iostream>
